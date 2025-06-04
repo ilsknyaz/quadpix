@@ -1,0 +1,263 @@
+*, ::after, ::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    color: var(--text-color);
+}
+
+.app-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-panel {
+    padding: 10px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+}
+
+#saveButton, #clearButton, #lightModeBtn, #darkModeBtn {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    height: 40px;
+    padding: 0 24px;
+    background-color: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+    color: var(--text-color);
+}
+
+#saveButton:hover, #clearButton:hover, #lightModeBtn:hover, #darkModeBtn:hover {
+    background-color: var(--button-hover);
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    background-color: var(--panel-bg);
+    min-height: 0;
+}
+
+.tools-panel {
+    width: 60px;
+    background-color: var(--panel-bg);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#zoomInBtn, #zoomOutBtn, .tool {
+    width: 40px;
+    height: 40px;
+    background-color: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+#zoomInBtn:hover, #zoomOutBtn:hover, .tool:hover {
+    background-color: var(--button-hover);
+}
+
+.tool.active {
+    background-color: var(--button-hover);
+    border: 1px solid var(--active-color);
+    color: var(--text-color);
+}
+
+.canvas-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    background-color: var(--panel-bg);
+}
+
+.canvas-container.center-canvas {
+    align-items: center;
+}
+
+.canvas-scroll-wrapper {
+    overflow: auto;
+    background: var(--canvas-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
+.canvas-scroll-wrapper.no-scrollbars {
+    overflow: hidden;
+}
+
+#pixelCanvas {
+    background-color: var(--canvas-bg);
+    display: block;
+}
+
+.right-panel {
+    width: 260px;
+    background-color: var(--panel-bg);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.color-picker {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.color-palette {
+    margin-bottom: 10px;
+}
+
+.color-picker .color-palette {
+    display: flex;
+    justify-content: center;
+}
+
+.color-presets {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+    margin-bottom: 10px;
+}
+
+#values {
+    font-family: monospace;
+    line-height: 150%;
+}
+
+.color-preset {
+    aspect-ratio: 1;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.color-preset.active {
+    border: 2px solid var(--text-color);
+}
+
+.layers-panel {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--panel-bg);
+    color: var(--text-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.layers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+.layers-header h3 {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.layer-controls {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+}
+
+.layer-btn {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+.layer-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.layers-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.layer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+}
+
+.layer:hover {
+    background-color: var(--button-hover);
+}
+
+.layer.active {
+    background-color: var(--button-hover);
+}
+
+.layer-visibility {
+    margin-right: 8px;
+}
+
+.layer-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+} 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Editor</title>
+    <style>
+        :root {
+            /* Light theme (default) */
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --panel-bg: #f0f0f0;
+            --button-bg: #e0e0e0;
+            --button-hover: #d0d0d0;
+            --border-color: #cccccc;
+            --grid-color: #dddddd;
+            --canvas-bg: #ffffff;
+            --layer-bg: #ffffff;
+            --layer-text: #333333;
+            --layer-border: #cccccc;
+            --active-color: #333333;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --panel-bg: #2d2d2d;
+            --button-bg: #3d3d3d;
+            --button-hover: #4d4d4d;
+            --border-color: #404040;
+            --grid-color: #404040;
+            --canvas-bg: #1a1a1a;
+            --layer-bg: #2d2d2d;
+            --layer-text: #ffffff;
+            --layer-border: #404040;
+            --active-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .top-panel {
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .tools-panel, .right-panel {
+            background-color: var(--panel-bg);
+            /*border: 1px solid var(--border-color);*/
+        }
+
+        .tool {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .tool:hover {
+            background-color: var(--button-hover);
+        }
+
+        .layers-panel {
+            background-color: var(--layer-bg);
+            color: var(--layer-text);
+            /*border: 1px solid var(--layer-border);*/
+        }
+
+        .layer {
+            background-color: var(--layer-bg);
+            color: var(--layer-text);
+            border: 1px solid var(--layer-border);
+        }
+
+        .layer.active {
+            background-color: var(--button-hover);
+        }
+
+        #pixelCanvas {
+            background-color: var(--canvas-bg);
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/569cd0d4a7.js" crossorigin="anonymous"></script>
+    <script src="./node_modules/@jaames/iro/dist/iro.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-panel">
+            <button id="saveButton" style="font-size: 17px;">Сохранить</button>
+            <button id="clearButton" style="font-size: 17px;">Очистить</button>
+            <button id="lightModeBtn" style="font-size: 17px;" title="Светлая тема (Light mode)"><i class="fas fa-sun"></i></button>
+            <button id="darkModeBtn" style="font-size: 17px;" title="Тёмная тема (Dark mode)"><i class="fas fa-moon"></i></button>
+        </div>
+        <div class="main-content">
+            <div class="tools-panel">
+                <div class="tool" data-tool="pencil" title="Карандаш (Pencil)"><i class="fas fa-pencil-alt"></i></div>
+                <div class="tool" data-tool="line" title="Линия (Line)"><i class="fas fa-slash"></i></div>
+                <div class="tool" data-tool="rectangle" title="Прямоугольник (Rectangle)"><i class="fas fa-square"></i></div>
+                <div class="tool" data-tool="rectangle-filled" title="Прямоугольник с заливкой (Filled Rectangle)"><i class="fas fa-square"></i><span style="font-size: 12px; margin-left: 2px; font-weight: bold;">F</span></div>
+                <div class="tool" data-tool="circle" title="Окружность (Circle)"><i class="fas fa-circle"></i></div>
+                <div class="tool" data-tool="circle-filled" title="Окружность с заливкой (Filled Circle)"><i class="fas fa-circle"></i><span style="font-size: 12px; margin-left: 2px; font-weight: bold;">F</span></div>
+                <div class="tool" data-tool="eraser" title="Ластик (Eraser)"><i class="fas fa-eraser"></i></div>
+                <div id="zoomInBtn" title="Увеличить (Zoom In)"><i class="fas fa-plus"></i></div>
+                <div id="zoomOutBtn" title="Уменьшить (Zoom Out)"><i class="fas fa-minus"></i></div>
+            </div>
+            
+            <div class="canvas-container">
+                <div class="canvas-scroll-wrapper">
+                    <canvas id="pixelCanvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="right-panel">
+                <div class="color-picker">
+                    <div id="picker" class="color-palette"></div>
+                    <div class="color-presets">
+                        <div class="color-preset" data-color="#ffffff" style="background-color: #ffffff"></div>
+                        <div class="color-preset" data-color="#5f2cdd" style="background-color: #5f2cdd"></div>
+                        <div class="color-preset" data-color="#752c53" style="background-color: #752c53"></div>
+                        <div class="color-preset" data-color="#3b8456" style="background-color: #3b8456"></div>
+                        <div class="color-preset" data-color="#a0563d" style="background-color: #a0563d"></div>
+                        <div class="color-preset" data-color="#5f5850" style="background-color: #5f5850"></div>
+                        <div class="color-preset" data-color="#c3c3c6" style="background-color: #c3c3c6"></div>
+                        <div class="color-preset" data-color="#edf1ff" style="background-color: #edf1ff"></div>
+
+                        <div class="color-preset" data-color="#da3855" style="background-color: #da3855"></div>
+                        <div class="color-preset" data-color="#eda541" style="background-color: #eda541"></div>
+                        <div class="color-preset" data-color="#f5ea5a" style="background-color: #f5ea5a"></div>
+                        <div class="color-preset" data-color="#75b85b" style="background-color: #75b85b"></div>
+                        <div class="color-preset" data-color="#66a5d7" style="background-color: #66a5d7"></div>
+                        <div class="color-preset" data-color="#817799" style="background-color: #817799"></div>
+                        <div class="color-preset" data-color="#e17ea5" style="background-color: #e17ea5"></div>
+                        <div class="color-preset" data-color="#f4cdaf" style="background-color: #f4cdaf"></div>
+                    </div>
+                    <div id="values"></div>
+                </div>
+                <div class="layers-panel">
+                    <div class="layers-header">
+                        <div class="layer-controls">
+                            <button class="layer-btn" id="addLayer">Добавить</button>
+                            <button class="layer-btn" id="deleteLayer">Удалить</button>
+                        </div>
+                    </div>
+                    <div class="layers-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -2,6 +2,12 @@
 const lightModeBtn = document.getElementById('lightModeBtn');
 const darkModeBtn = document.getElementById('darkModeBtn');
 
+// Guide button functionality
+const guideButton = document.getElementById('guideButton');
+guideButton.addEventListener('click', () => {
+    window.location.href = 'guide.html';
+});
+
 // Check for saved theme preference
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
@@ -42,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Canvas settings
     const BASE_CANVAS_SIZE = 600;
     let PIXEL_SIZE = 20;
-    const GRID_COLS = BASE_CANVAS_SIZE / 20; // base grid cols
-    const GRID_ROWS = BASE_CANVAS_SIZE / 20; // base grid rows
+    let GRID_SIZE = 30; // Default grid size
     let zoomLevel = 1;
     const MIN_ZOOM = 1; // Don't allow zooming out below 1x
     const MAX_ZOOM = 4;
@@ -52,6 +57,43 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = BASE_CANVAS_SIZE;
     canvas.height = BASE_CANVAS_SIZE;
     
+    // Canvas resize functionality
+    const canvasSizeInput = document.getElementById('canvasSize');
+    const resizeCanvasBtn = document.getElementById('resizeCanvasBtn');
+
+    function resizeCanvas() {
+        const newSize = parseInt(canvasSizeInput.value);
+
+        if (newSize < 1 || newSize > 100) {
+            alert('Please enter a valid size between 1 and 100');
+            return;
+        }
+
+        // Update grid size
+        GRID_SIZE = newSize;
+        GRID_COLS = newSize;
+        GRID_ROWS = newSize;
+
+        // Calculate pixel size to fit the canvas
+        PIXEL_SIZE = Math.floor(BASE_CANVAS_SIZE / newSize);
+
+        // Resize all layer canvases
+        layers.forEach(layer => {
+            layer.canvas.width = BASE_CANVAS_SIZE;
+            layer.canvas.height = BASE_CANVAS_SIZE;
+            const layerCtx = layer.canvas.getContext('2d');
+            layerCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+            layerCtx.fillRect(0, 0, BASE_CANVAS_SIZE, BASE_CANVAS_SIZE);
+        });
+
+        // Reset zoom to 1
+        zoomLevel = 1;
+        updateCanvasZoom();
+        renderLayers();
+    }
+
+    resizeCanvasBtn.addEventListener('click', resizeCanvas);
+
     // Drawing state
     let currentTool = 'pencil';
     let isDrawing = false;
@@ -260,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         layerCtx.strokeStyle = '#ddd';
-        layerCtx.strokeRect(pixelX, pixelY, PIXEL_SIZE, PIXEL_SIZE);
+        // layerCtx.strokeRect(pixelX, pixelY, PIXEL_SIZE, PIXEL_SIZE);
         
         renderLayers();
     }

@@ -100,8 +100,8 @@
     </style>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
     <script src="https://kit.fontawesome.com/569cd0d4a7.js" crossorigin="anonymous"></script>
-    <script src="./node_modules/@jaames/iro/dist/iro.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -110,6 +110,12 @@
             <button id="clearButton" style="font-size: 17px;">Очистить</button>
             <button id="lightModeBtn" style="font-size: 17px;" title="Светлая тема (Light mode)"><i class="fas fa-sun"></i></button>
             <button id="darkModeBtn" style="font-size: 17px;" title="Тёмная тема (Dark mode)"><i class="fas fa-moon"></i></button>
+            <div class="canvas-size-controls">
+                <input type="number" id="canvasSize" min="1" max="100" value="30" title="Canvas Size (pixels)">
+                <button id="resizeCanvasBtn" title="Изменить размер холста (Resize Canvas)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div style="flex-grow: 1;"></div>
+            <div class="tool" id="guideButton" title="Руководство (Guide)"><i class="fas fa-book"></i></div>
         </div>
         <div class="main-content">
             <div class="tools-panel">

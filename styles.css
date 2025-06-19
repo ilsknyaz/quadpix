@@ -47,6 +47,49 @@ body {
     background-color: var(--button-hover);
 }
 
+.canvas-size-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 10px;
+}
+
+.canvas-size-controls input {
+    width: 70px;
+    height: 40px;
+    padding: 0 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    font-size: 16px;
+    text-align: center;
+}
+
+.canvas-size-controls span {
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+#resizeCanvasBtn {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+#resizeCanvasBtn:hover {
+    background-color: var(--button-hover);
+}
+
 .main-content {
     display: flex;
     flex: 1;
